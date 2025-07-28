@@ -1,28 +1,30 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
 
-// Get all featured jobs for homepage
+// Get all jobs for portfolio page
 const allJobs = await getCollection('jobs');
-const featuredJobs = allJobs
-  .filter(job => job.data.featured && job.data.status === 'published')
+const publishedJobs = allJobs
+  .filter(job => job.data.status === 'published')
   .sort((a, b) => a.data.order - b.data.order);
 ---
 
-<BaseLayout>
+<BaseLayout title="Portfolio - Alejandro Delgado">
   <main>
     <div class="container">
-      <Header />
-      
       <div class="section padding-block-start-10">
-        {featuredJobs.map(job => (
-          <div class="job-description padding-block-2">
-            <h3 class="job-title margin-block-end-4">{job.data.title}</h3>
+        <h1 class="heading-1 margin-block-end-8">Complete Portfolio</h1>
+        
+        {publishedJobs.map(job => (
+          <div class="job-description padding-block-8">
+            <h2 class="job-title margin-block-end-4">{job.data.title}</h2>
             <p><span class="job-label">Place = </span><span class="job-place">{job.data.place}</span>;</p>
             <p><span class="job-label">Type = </span>{job.data.type};</p>
             <p><span class="job-label">Period = </span>{job.data.period};</p>
             <p><span class="job-label">Tags = </span><span class="job-tags">{job.data.tags.join(', ')}</span>;</p>
+            {job.data.industry && (
+              <p><span class="job-label">Industry = </span>{job.data.industry};</p>
+            )}
             <p>
               <span class="job-label">Tasks = </span>
               <span class="job-description_parentheses">(</span>
@@ -35,7 +37,7 @@ const featuredJobs = allJobs
               <span class="job-description_brackets">}</span>
               <span class="job-description_parentheses">)</span>;
             </p>
-            <p><a href={`/jobs/${job.slug}/`}>Ver detalles →</a></p>
+            <p><a href={`/jobs/${job.slug}/`}>Ver detalles completos →</a></p>
           </div>
         ))}
       </div>

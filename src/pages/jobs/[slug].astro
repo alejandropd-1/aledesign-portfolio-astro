@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const jobs = await getCollection('jobs');
+  return jobs.map((job) => ({
+    params: { slug: job.slug },
+    props: { job },
+  }));
+}
+
+const { job } = Astro.props;
+const { Content } = await job.render();
+---
+
+<BaseLayout title={`${job.data.title} - ${job.data.place}`}>
+  <main>
+    <div class="container">
+      <div class="section padding-block-start-10">
+        <h1 class="job-title margin-block-end-4">{job.data.title}</h1>
+        <div class="job-description padding-block-2">
+          <p><span class="job-label">Place = </span><span class="job-place">{job.data.place}</span>;</p>
+          <p><span class="job-label">Type = </span>{job.data.type};</p>
+          <p><span class="job-label">Period = </span>{job.data.period};</p>
+          <p><span class="job-label">Tags = </span><span class="job-tags">{job.data.tags.join(', ')}</span>;</p>
+          <div class="job-content">
+            <span class="job-label">Tasks = </span>
+            <span class="job-description_parentheses">(</span>
+            <span class="job-description_brackets">{</span>
+            <Content />
+            <span class="job-description_brackets">}</span>
+            <span class="job-description_parentheses">)</span>;
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
