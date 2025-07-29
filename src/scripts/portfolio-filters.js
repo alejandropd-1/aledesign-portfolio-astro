@@ -1,70 +1,3 @@
----
-import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-
-// Get all jobs for portfolio page
-const allJobs = await getCollection('jobs');
-const publishedJobs = allJobs
-  .filter(job => job.data.status === 'published')
-  .sort((a, b) => a.data.order - b.data.order);
----
-
-<BaseLayout title="Portfolio - Alejandro Delgado">
-  <main>
-    <div class="container">
-      <div class="section padding-block-start-10">
-        <h1 class="heading-1 margin-block-end-8">Complete Portfolio</h1>
-
-        <!-- Filter buttons -->
-        <div class="filter-controls margin-block-end-8">
-          <button id="show-all" class="filter-btn active">All Projects</button>
-          <button id="show-react" class="filter-btn">React Projects</button>
-          <button id="show-design" class="filter-btn">Design Projects</button>
-        </div>
-
-        {publishedJobs.map(job => {
-          // Determine the project type based on tags
-          const isReact = job.data.tags.some(tag => tag.toLowerCase().includes('react'));
-          const isDesign = job.data.tags.some(tag =>
-            ['ui', 'ux', 'design', 'wireframe', 'mockups', 'adobe'].includes(tag.toLowerCase())
-          );
-
-          let dataType = 'other';
-          if (isReact) dataType = 'react';
-          else if (isDesign) dataType = 'design';
-
-          return (
-            <div class="job-description job-card padding-block-8" data-type={dataType}>
-            <h2 class="job-title margin-block-end-4">{job.data.title}</h2>
-            <p><span class="job-label">Place = </span><span class="job-place">{job.data.place}</span>;</p>
-            <p><span class="job-label">Type = </span>{job.data.type};</p>
-            <p><span class="job-label">Period = </span>{job.data.period};</p>
-            <p><span class="job-label">Tags = </span><span class="job-tags">{job.data.tags.join(', ')}</span>;</p>
-            {job.data.industry && (
-              <p><span class="job-label">Industry = </span>{job.data.industry};</p>
-            )}
-            <p>
-              <span class="job-label">Tasks = </span>
-              <span class="job-description_parentheses">(</span>
-              <span class="job-description_brackets">{</span>
-              <ul>
-                {job.body.split('\n').filter(line => line.startsWith('- ')).map(task => (
-                  <li>{task.replace('- ', '')}</li>
-                ))}
-              </ul>
-              <span class="job-description_brackets">}</span>
-              <span class="job-description_parentheses">)</span>;
-            </p>
-            <p><a href={`/jobs/${job.slug}/`}>Ver detalles completos →</a></p>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  </main>
-</BaseLayout>
-
-<script>
 // Portfolio filters - Super basic JavaScript for filtering jobs
 // Following Wes Bos level 16 concepts
 
@@ -73,45 +6,45 @@ console.log('Portfolio filters script loaded!');
 // Wait for the page to load completely
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, setting up filters...');
-
+    
     // Get all the filter buttons
     const showAllBtn = document.getElementById('show-all');
     const showReactBtn = document.getElementById('show-react');
     const showDesignBtn = document.getElementById('show-design');
-
+    
     console.log('Filter buttons found:', showAllBtn, showReactBtn, showDesignBtn);
-
+    
     // Get all job cards
     const allJobCards = document.querySelectorAll('.job-card');
     console.log('Job cards found:', allJobCards.length);
-
+    
     // Function to show all projects
     function showAll() {
         console.log('Showing all projects...');
-
+        
         // Loop through all job cards and show them
         for (let i = 0; i < allJobCards.length; i++) {
             console.log('Showing job card:', i);
             allJobCards[i].style.display = 'block';
         }
-
+        
         // Update active button
         removeActiveFromAllButtons();
         showAllBtn.classList.add('active');
         console.log('All projects visible!');
     }
-
+    
     // Function to show only React projects
     function showOnlyReact() {
         console.log('Showing only React projects...');
-
+        
         // Loop through all job cards
         for (let i = 0; i < allJobCards.length; i++) {
             const jobCard = allJobCards[i];
             const dataType = jobCard.getAttribute('data-type');
-
+            
             console.log('Job card', i, 'has data-type:', dataType);
-
+            
             // Show if it's a React project, hide if not
             if (dataType === 'react') {
                 console.log('Showing React project:', i);
@@ -121,24 +54,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 jobCard.style.display = 'none';
             }
         }
-
+        
         // Update active button
         removeActiveFromAllButtons();
         showReactBtn.classList.add('active');
         console.log('Only React projects visible!');
     }
-
+    
     // Function to show only Design projects
     function showOnlyDesign() {
         console.log('Showing only Design projects...');
-
+        
         // Loop through all job cards
         for (let i = 0; i < allJobCards.length; i++) {
             const jobCard = allJobCards[i];
             const dataType = jobCard.getAttribute('data-type');
-
+            
             console.log('Job card', i, 'has data-type:', dataType);
-
+            
             // Show if it's a Design project, hide if not
             if (dataType === 'design') {
                 console.log('Showing Design project:', i);
@@ -148,13 +81,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 jobCard.style.display = 'none';
             }
         }
-
+        
         // Update active button
         removeActiveFromAllButtons();
         showDesignBtn.classList.add('active');
         console.log('Only Design projects visible!');
     }
-
+    
     // Helper function to remove active class from all buttons
     function removeActiveFromAllButtons() {
         console.log('Removing active class from all buttons...');
@@ -162,26 +95,25 @@ document.addEventListener('DOMContentLoaded', function() {
         showReactBtn.classList.remove('active');
         showDesignBtn.classList.remove('active');
     }
-
+    
     // Add event listeners to buttons
     console.log('Adding event listeners to buttons...');
-
+    
     showAllBtn.addEventListener('click', function() {
         console.log('All button clicked!');
         showAll();
     });
-
+    
     showReactBtn.addEventListener('click', function() {
         console.log('React button clicked!');
         showOnlyReact();
     });
-
+    
     showDesignBtn.addEventListener('click', function() {
         console.log('Design button clicked!');
         showOnlyDesign();
     });
-
+    
     console.log('All event listeners added successfully!');
     console.log('Filter system ready to use!');
 });
-</script>

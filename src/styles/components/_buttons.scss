@@ -35,3 +35,45 @@
     }
   }
 }
+
+// Filter buttons for portfolio
+.filter-controls {
+  display: flex;
+  gap: 1rem;
+  margin-block-end: 2rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-family: $font-family-accent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border: 1px solid $color-neutral-300;
+  border-radius: 0.25rem;
+  background-color: $color-neutral-000;
+  color: $color-neutral-800;
+  transition: all 275ms ease;
+  text-transform: none;
+  
+  &:hover {
+    background-color: $color-neutral-100;
+    border-color: $color-neutral-400;
+    transform: translateY(-1px);
+  }
+  
+  &.active {
+    background-color: $color-primary-600;
+    color: $color-neutral-000;
+    border-color: $color-primary-600;
+    
+    &:hover {
+      background-color: $color-primary-700;
+      border-color: $color-primary-700;
+    }
+  }
+}
