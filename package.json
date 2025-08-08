@@ -4,18 +4,11 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "lint": "eslint src --ext .js,.astro",
-    "lint:fix": "eslint src --ext .js,.astro --fix"
+    "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.12.3",
-    "eslint-config-wesbos": "^4.3.2",
-    "postcss-preset-env": "^10.2.4",
-    "sass": "^1.89.2",
-    "vite-plugin-html-purgecss": "^0.1.1"
+    "astro": "^5.12.3"
   }
 }

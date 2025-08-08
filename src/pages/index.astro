@@ -1,44 +1,16 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
 
-// Get all featured jobs for homepage
-const allJobs = await getCollection('jobs');
-const featuredJobs = allJobs
-  .filter(job => job.data.featured && job.data.status === 'published')
-  .sort((a, b) => a.data.order - b.data.order);
 ---
 
-<BaseLayout>
-  <main>
-    <div class="container">
-      <Header />
-      
-      <div class="section padding-block-start-10">
-        {featuredJobs.map(job => (
-          <div class="job-description padding-block-2">
-            <h3 class="job-title margin-block-end-4">{job.data.title}</h3>
-            <p><span class="job-label">Place = </span><span class="job-place">{job.data.place}</span>;</p>
-            <p><span class="job-label">Type = </span>{job.data.type};</p>
-            <p><span class="job-label">Period = </span>{job.data.period};</p>
-            <p><span class="job-label">Tags = </span><span class="job-tags">{job.data.tags.join(', ')}</span>;</p>
-            <p>
-              <span class="job-label">Tasks = </span>
-              <span class="job-description_parentheses">(</span>
-              <span class="job-description_brackets">{</span>
-              <ul>
-                {job.body.split('\n').filter(line => line.startsWith('- ')).map(task => (
-                  <li>{task.replace('- ', '')}</li>
-                ))}
-              </ul>
-              <span class="job-description_brackets">}</span>
-              <span class="job-description_parentheses">)</span>;
-            </p>
-            <p><a href={`/jobs/${job.slug}/`}>Ver detalles →</a></p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </main>
-</BaseLayout>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<h1>Astro</h1>
+	</body>
+</html>
